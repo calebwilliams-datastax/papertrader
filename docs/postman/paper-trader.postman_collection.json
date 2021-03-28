@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "8620397c-1022-4987-8a65-dd93e7b99403",
+		"name": "paper-trader",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "stargate_auth_token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" :\"cassandra\",\n    \"password\": \"cassandra\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "graphql_keyspace_create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Cassandra-Token",
+						"value": "34788c2e-4e39-44cf-9c12-664d501f650f",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation kspt {\n    createKeyspace(name:\"papertrader\", replicas: 1)\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql-schema",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql-schema"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "graphql_table_drop",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Cassandra-Token",
+						"value": "828e56e8-c7ae-4396-82f7-4845f07481d1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation dropTable {\n    users: dropTable(\n        keyspaceName:\"papertrader\"\n        tableName:\"users\"\n    )\n    games: dropTable(\n        keyspaceName:\"papertrader\"\n        tableName:\"games\"\n    )\n    portfolios: dropTable(\n        keyspaceName:\"papertrader\"\n        tableName:\"portfolios\"\n    )\n    orders: dropTable(\n        keyspaceName:\"papertrader\"\n        tableName:\"orders\"\n    )\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql-schema",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql-schema"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "graphql_table_create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Cassandra-Token",
+						"value": "828e56e8-c7ae-4396-82f7-4845f07481d1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createTables {\n\tusers: createTable(\n\t  keyspaceName:\"papertrader\"\n\t  tableName:\"users\"\n\t  partitionKeys: [ \n\t\t{ name: \"id\", type: {basic: TEXT} }\n        { name: \"username\", type: {basic: TEXT }}\n\t  ],\n      values: [\n          { name: \"name\", type: {basic: TEXT }}\n          { name: \"email\", type: {basic: TEXT }}\n          { name: \"created\", type: {basic :DATE }}\n      ]\n\t)\n\tgames: createTable(\n\t\tkeyspaceName:\"papertrader\",\n\t\ttableName:\"games\",\n\t\tpartitionKeys: [ \n\t\t  { name: \"id\", type: {basic: TEXT} }\n\t\t],\n        values: [\n            { name: \"cap\", type: {basic: DECIMAL }},\n            { name: \"created\", type: {basic: DATE }},\n            { name: \"created_by\", type : {basic: TEXT }},\n            { name: \"name\", type : {basic: TEXT }},\n            { name: \"end\", type: {basic: DATE }}\n        ]\n\t  )\n    portfolios: createTable (\n        keyspaceName:\"papertrader\",\n        tableName:\"portfolios\",\n        partitionKeys: [\n            {name: \"id\", type:{basic: TEXT}},\n        ],\n        clusteringKeys: [\n            {name: \"game_id\", type: {basic: TEXT }},\n            {name: \"user_id\", type: {basic: TEXT }}\n        ],\n        values: [\n            {name: \"cash\", type: {basic: DECIMAL}},\n            {name: \"spent\", type: {basic: DECIMAL }},\n            {name: \"value\", type: { basic: DECIMAL }}\n        ]\n    )\n    orders: createTable (\n        keyspaceName: \"papertrader\",\n        tableName: \"orders\",\n        partitionKeys: [\n            {name: \"id\", type:{basic: TEXT}}\n        ],\n        clusteringKeys: [\n            {name: \"user_id\", type: {basic: TEXT }},\n            {name: \"portfolio_id\", type: {basic: TEXT }},\n        ],\n        values: [\n            {name: \"symbol\", type: { basic: TEXT }},\n            {name: \"action\", type: {basic : INT }},\n            {name: \"created\", type: {basic: DATE }},\n            {name: \"closed\", type: {basic: DATE }},\n            {name: \"type\", type: {basic: INT }},\n            {name: \"ask\", type: {basic: DECIMAL }}\n            {name: \"actual\", type:{ basic: DECIMAL }}\n        ]\n    )\n  }",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql-schema",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql-schema"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
