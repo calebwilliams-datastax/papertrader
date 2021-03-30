@@ -8,10 +8,10 @@ users: createTable(
 	  tableName:"users"
 	  partitionKeys: [
 		{ name: "id", type: {basic: TEXT} }
-        { name: "username", type: {basic: TEXT }}
+
 	  ],
       values: [
-          { name: "name", type: {basic: TEXT }}
+		  { name: "name", type: {basic: TEXT }}
           { name: "email", type: {basic: TEXT }}
           { name: "created", type: {basic :DATE }}
       ]

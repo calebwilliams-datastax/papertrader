@@ -25,5 +25,5 @@ type Game struct {
 	CreatedBy string    `json:"created_by"`
 	Name      string    `json:"name"`
 	End       time.Time `json:"end"`
-	Cap       float64   `json:"cap"`
+	Cap       string    `json:"cap"`
 }

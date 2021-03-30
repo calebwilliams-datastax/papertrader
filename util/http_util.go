@@ -2,10 +2,7 @@ package util
 
 import "net/http"
 
-func ReturnJSONResponse(w http.ResponseWriter, r *http.Request, i interface{}) {
-
-}
-
 func HandleError(w http.ResponseWriter, r *http.Request, err error) {
-
+	w.WriteHeader(500)
+	w.Write([]byte(err.Error()))
 }

@@ -3,8 +3,11 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/papertrader-api/models"
 	"github.com/papertrader-api/util"
 )
 
@@ -41,6 +44,49 @@ func (ec *EndpointContext) SetupSchema(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
+func (ec *EndpointContext) DeleteTestData(w http.ResponseWriter, r *http.Request) {
+	ec.RefreshAuthToken()
+	query := models.QueryByValues("users", map[string]string{"name": "system"}, models.User{})
+	fmt.Printf("query : %s", query)
+	res, err := ec.PostGraphQL("keyspace", query)
+	if err != nil {
+		util.HandleError(w, r, err)
+	}
+	w.WriteHeader(200)
+	w.Write([]byte(res))
+}
+
+func (ec *EndpointContext) SetupTestData(w http.ResponseWriter, r *http.Request) {
+	usr := models.User{
+		ID:      models.GenerateID(),
+		Name:    "system",
+		Email:   "system@papertrader.com",
+		Created: time.Now(),
+	}
+	game := models.Game{
+		ID:        models.GenerateID(),
+		Created:   time.Now(),
+		CreatedBy: usr.ID,
+		End:       time.Now().AddDate(0, 1, 0),
+		Name:      "system gen: test game",
+		Cap:       "1000000.00",
+	}
+	portfolio := models.Portfolio{
+		ID:      models.GenerateID(),
+		Created: time.Now(),
+		GameID:  game.ID,
+		UserID:  usr.ID,
+		Cash:    game.Cap,
+		Spent:   "0.00",
+	}
+
+	usrQuery := models.InsertMutation("user", "users", usr)
+	gameQuery := models.InsertMutation("game", "games", game)
+	portfolioQuery := models.InsertMutation("portfolio", "portfolios", portfolio)
+
+	fmt.Printf("===\nuser mut: %s\ngame mut: %s\nport mut:%s\n===", usrQuery, gameQuery, portfolioQuery)
+}
+
 func (ec *EndpointContext) CreateKeyspace() (int, error) {
 	res, err := http.Post(ec.Endpoints["schema"],
 		"application/json",
@@ -63,9 +109,7 @@ func (ec *EndpointContext) DropTables() (int, error) {
 }
 
 var createKeyspace = `
-mutation kspt {
-    createKeyspace(name:"papertrader", replicas: 1)
-}`
+mutation kspt { createKeyspace(name:"papertrader", replicas: 1)}`
 
 var createTables = `
 mutation createTables {
