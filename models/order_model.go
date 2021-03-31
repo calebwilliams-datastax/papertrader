@@ -4,29 +4,6 @@ import (
 	"time"
 )
 
-/*
-orders: createTable (
-        keyspaceName: "papertrader",
-        tableName: "orders",
-        partitionKeys: [
-            {name: "id", type:{basic: TEXT}}
-        ],
-        clusteringKeys: [
-            {name: "user_id", type: {basic: TEXT }},
-            {name: "portfolio_id", type: {basic: TEXT }},
-        ],
-        values: [
-            {name: "symbol", type: { basic: TEXT }},
-            {name: "action", type: {basic : INT }},
-            {name: "created", type: {basic: DATE }},
-            {name: "closed", type: {basic: DATE }},
-            {name: "type", type: {basic: INT }},
-            {name: "ask", type: {basic: DECIMAL }}
-            {name: "actual", type:{ basic: DECIMAL }}
-        ]
-    )
-*/
-
 type Order struct {
 	ID          string      `json:"id"`
 	UserID      string      `json:"user_id"`

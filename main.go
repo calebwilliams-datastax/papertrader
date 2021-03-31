@@ -20,12 +20,11 @@ func main() {
 	//healthcheck
 	router.HandleFunc("/healthcheck", healthcheck).Methods("GET")
 	//setup
-	router.HandleFunc("/setup/database/schema", ec.SetupSchema).Methods("GET")
-	router.HandleFunc("/setup/database/test", ec.SetupTestData).Methods("GET")
-	router.HandleFunc("/setup/database/delete", ec.DeleteTestData).Methods("GET")
+	//router.HandleFunc("/setup/database/schema", ec.SetupSchema).Methods("GET")
+	router.HandleFunc("/setup/database/data", ec.SetupTestData).Methods("GET")
+	//router.HandleFunc("/setup/database/delete", ec.DeleteTestData).Methods("GET")
 	//users
 	router.HandleFunc("/user", ec.UserCreate).Methods("POST")
-	router.HandleFunc("/user/{id}", ec.UserById).Methods("GET")
 	router.HandleFunc("/user/{name}", ec.UserByName).Methods("GET")
 	router.HandleFunc("/user/delete/{id}", ec.UserDelete).Methods("POST")
 	//games
@@ -52,7 +51,7 @@ func processFlags() map[string]string {
 	port := flag.String("port", "8083", "-port=8083")
 	local := flag.String("local", "localhost", "-local=localhost")
 	token := flag.String("token", "637d7289-89a1-4f13-989a-14c6fc837600", "-token=foo")
-	db_url := flag.String("db_url", "http://localhost:8080", "-db_url=http://localhost:8080")
+	db_url := flag.String("db_url", "http://localhost:8082", "-db_url=http://localhost:8082")
 	auth_url := flag.String("auth_url", "http://localhost:8081", "-auth_url=http://localhost:8081")
 	db_user := flag.String("db_user", "cassandra", "-db_user=cassandra")
 	db_pass := flag.String("db_pass", "cassandra", "-db_pass=cassandra")

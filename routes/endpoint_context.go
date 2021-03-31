@@ -7,6 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/papertrader-api/models"
+	"github.com/papertrader-api/util"
 )
 
 type EndpointContext struct {
@@ -24,17 +27,18 @@ type Auth struct {
 func NewEndpointContext(args map[string]string) EndpointContext {
 	context := EndpointContext{
 		Headers: map[string]string{
-			"X-Cassandra-Token": args["token"],
+			"X-Cassandra-Token": "",
+			"Content-Type":      "application/json",
 		},
 		Endpoints: map[string]string{
 			"base":       fmt.Sprintf("%s/", args["db_url"]),
 			"auth":       fmt.Sprintf("%s/v1/auth", args["auth_url"]),
 			"schema":     fmt.Sprintf("%s/graphql-schema", args["db_url"]),
-			"users":      fmt.Sprintf("%s/graphql/users", args["db_url"]),
-			"games":      fmt.Sprintf("%s/graphql/games", args["db_url"]),
-			"portfolios": fmt.Sprintf("%s/graphql/portfolios", args["db_url"]),
-			"orders":     fmt.Sprintf("%s/graphql/orders", args["db_url"]),
-			"keyspace":   fmt.Sprintf("%s/graphql/papertrader", args["db_url"]),
+			"users":      fmt.Sprintf("%s/v2/keyspaces/papertrader/users", args["db_url"]),
+			"games":      fmt.Sprintf("%s/v2/keyspaces/papertrader/games", args["db_url"]),
+			"portfolios": fmt.Sprintf("%s/v2/keyspaces/papertrader/portfolios", args["db_url"]),
+			"orders":     fmt.Sprintf("%s/v2/keyspaces/papertrader/orders", args["db_url"]),
+			"keyspace":   fmt.Sprintf("%sv2/schemas/keyspaces", args["db_url"]),
 		},
 		Auth: Auth{
 			Username: args["db_user"],
@@ -42,6 +46,46 @@ func NewEndpointContext(args map[string]string) EndpointContext {
 		},
 	}
 	return context
+}
+
+func (e *EndpointContext) GetByClause(table, clause, column string, values []string) (int, string, error) {
+	e.RefreshAuthToken()
+	client := http.Client{}
+	where := models.Where(clause, column, values)
+	url := fmt.Sprintf(`%s?where=%s`, e.Endpoints[table], where)
+	req, err := util.BuildGETRequest(url, e.Headers)
+	if err != nil {
+		return 500, "", err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return 500, "", err
+	}
+	data, err := util.ReadResponse(res)
+	if err != nil {
+		return 500, "", err
+	}
+	return res.StatusCode, data, nil
+}
+
+func (e *EndpointContext) PostDB(table string, v interface{}) (int, string, error) {
+	e.RefreshAuthToken()
+	client := http.Client{}
+	defer client.CloseIdleConnections()
+	req, err := util.BuildPOSTRequest(e.Endpoints[table],
+		models.ToJson(v), e.Headers)
+	if err != nil {
+		return 500, "", err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return 500, "", err
+	}
+	data, err := util.ReadResponse(res)
+	if err != nil {
+		return 500, "", err
+	}
+	return res.StatusCode, data, nil
 }
 
 func (e *EndpointContext) PostGraphQL(endpoint string, query string) (string, error) {
@@ -79,6 +123,7 @@ func (e *EndpointContext) RefreshAuthToken() error {
 	if err := json.Unmarshal(raw, &data); err != nil {
 		return err
 	}
+	e.Headers["X-Cassandra-Token"] = data["authToken"]
 	e.Auth.Token = data["authToken"]
 	return nil
 }
