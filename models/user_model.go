@@ -9,8 +9,12 @@ type User struct {
 	Created time.Time `json:"created"`
 }
 
+type APIUserResponse struct {
+	Count int    `json:"count"`
+	Data  []User `json:"data"`
+}
+
 func (u *User) SetDefaults() {
 	u.ID = GenerateID()
 	u.Created = time.Now()
-
 }

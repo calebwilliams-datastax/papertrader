@@ -4,6 +4,11 @@ import (
 	"time"
 )
 
+type APIOrderResponse struct {
+	Count int     `json:"count"`
+	Data  []Order `json:"data"`
+}
+
 type Order struct {
 	ID          string      `json:"id"`
 	UserID      string      `json:"user_id"`

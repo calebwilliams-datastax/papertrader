@@ -11,6 +11,13 @@ import (
 	"time"
 )
 
+type APIData []string
+
+type APIResponse struct {
+	Count int     `json:"count"`
+	Data  APIData `json:"data"`
+}
+
 func GenerateID() string {
 	n := strconv.Itoa(int(time.Now().Unix()))
 	r := strconv.Itoa(rand.Int())
@@ -48,7 +55,7 @@ func Where(clause, column string, values []string) string {
 		}
 		b.WriteString("]}}")
 	default:
-		b.WriteString(fmt.Sprintf(`{"%s":{"%s":"%s" }}`, column, clause, values[0]))
+		b.WriteString(fmt.Sprintf(`{"%s":{"%s":"%s"}}`, column, clause, values[0]))
 	}
 	return b.String()
 }

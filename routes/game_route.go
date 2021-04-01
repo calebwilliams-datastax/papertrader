@@ -9,6 +9,17 @@ import (
 	"github.com/papertrader-api/util"
 )
 
+func (e *EndpointContext) GameList(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("ListGames\n")
+	code, res, err := e.GetAll("games")
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	w.WriteHeader(code)
+	w.Write([]byte(res))
+}
+
 func (db *EndpointContext) GameById(w http.ResponseWriter, r *http.Request) {
 
 }

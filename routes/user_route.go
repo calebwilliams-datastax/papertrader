@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -9,10 +10,6 @@ import (
 	"github.com/papertrader-api/models"
 	"github.com/papertrader-api/util"
 )
-
-func (ec *EndpointContext) UserById(w http.ResponseWriter, r *http.Request) {
-
-}
 
 func (ec *EndpointContext) UserByName(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("UserByName\n")
@@ -48,4 +45,24 @@ func (e *EndpointContext) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 func (ec *EndpointContext) UserUpdate(w http.ResponseWriter, r *http.Request) {}
 
-func (ec *EndpointContext) UserDelete(w http.ResponseWriter, r *http.Request) {}
+func (ec *EndpointContext) UserDelete(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("UserDelete\n")
+	res, err := util.ReadRequestBody(r)
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	user := models.User{}
+	json.Unmarshal([]byte(res), &user)
+	if user.Name == "" {
+		util.HandleError(w, r, errors.New("could not parse user"))
+		return
+	}
+	code, dbRes, err := ec.DeleteDB("users", "name", user.Name)
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	w.WriteHeader(code)
+	w.Write([]byte(dbRes))
+}
