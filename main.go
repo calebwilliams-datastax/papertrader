@@ -30,12 +30,10 @@ func main() {
 	//games
 	router.HandleFunc("/game", ec.GameCreate).Methods("POST")
 	router.HandleFunc("/game/{id}", ec.GameById).Methods("GET")
-	router.HandleFunc("/game/{name}", ec.GameByName).Methods("GET")
 	router.HandleFunc("/game/delete/{id}", ec.GameDelete).Methods("POST")
 	//portfolios
 	router.HandleFunc("/portfolio", ec.PortfolioCreate).Methods("POST")
 	router.HandleFunc("/portfolio/{id}", ec.PortfolioById).Methods("GET")
-	router.HandleFunc("/portfolio/{name}", ec.PortfolioByName).Methods("GET")
 	router.HandleFunc("/portfolio/delete/{id}", ec.PortfolioDelete).Methods("POST")
 	//orders
 	router.HandleFunc("/order/buy", ec.OrderCreate).Methods("POST")

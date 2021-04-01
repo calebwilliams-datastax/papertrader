@@ -48,7 +48,7 @@ func Where(clause, column string, values []string) string {
 		}
 		b.WriteString("]}}")
 	default:
-		b.WriteString(fmt.Sprintf(`{"%s":{"%s":"%s"}}`, column, clause, values[0]))
+		b.WriteString(fmt.Sprintf(`{"%s":{"%s":"%s" }}`, column, clause, values[0]))
 	}
 	return b.String()
 }

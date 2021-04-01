@@ -10,3 +10,8 @@ type Game struct {
 	End       time.Time `json:"end"`
 	Cap       float64   `json:"cap"`
 }
+
+func (g *Game) SetDefaults() {
+	g.ID = GenerateID()
+	g.Created = time.Now()
+}
