@@ -144,11 +144,11 @@ func join(input string) {
 		return
 	}
 
-	portfolio, err := fetchPortfolio(user.ID, game.ID)
-	if err != nil {
-		errorPrompt(fmt.Sprintf("could not fetch id:%s,game:%s\n", user.ID, game.ID))
-		return
-	}
+	// portfolio, err := fetchPortfolio(user.ID, game.ID)
+	// if err != nil {
+	// 	errorPrompt(fmt.Sprintf("could not fetch id:%s,game:%s\n", user.ID, game.ID))
+	// 	return
+	// }
 }
 
 func errorPrompt(text string) {
@@ -179,7 +179,7 @@ func fetchGame(id string) (models.Game, error) {
 	return gameRes.Data[0], nil
 }
 
-func fetchPortfolio(userID string, gameID string) (models.Portfolio, error){
+func fetchPortfolio(userID string, gameID string) (models.Portfolio, error) {
 	portfolio := models.Portfolio{}
 
 	res, err := http.Get(fmt.Sprintf("%s/portfolio/%s/%s"))
@@ -192,7 +192,6 @@ func fetchPortfolio(userID string, gameID string) (models.Portfolio, error){
 	}
 	portApiRes := models.APIPortfolioResponse{}
 	json.Unmarshal([]byte(data), &portApiRes)
-	
-	
+
 	return portfolio, nil
 }

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stargate
+  labels:
+    app.kubernetes.io/name: stargate
+    app.kubernetes.io/component: backend
+spec:
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: stargate
+        app.kubernetes.io/component: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: stargate
+        app.kubernetes.io/component: backend
+    spec:  
+      containers:
+      - name: stargate
+        image: stargateio/stargate-3_11:v1.0.7
+        env:
+        - name: CLUSTER_NAME
+          value: "stargate"
+        - name: CLUSTER_VERSION
+          value: "3.11"
+        - name: DEVELOPER_MODE
+          value: "true"
+        ports:
+        - containerPort: 8080
+          hostPort: 8080
+        - containerPort: 8081
+          hostPort: 8081
+        - containerPort: 8082
+          hostPort: 8082
+        - containerPort: 9042
+          hostPort: 9042

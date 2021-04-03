@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8620397c-1022-4987-8a65-dd93e7b99403",
+		"_postman_id": "4d298816-07a6-4c69-bbd3-ef09d07e23a8",
 		"name": "paper-trader",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -583,7 +583,9 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
