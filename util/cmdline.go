@@ -143,38 +143,11 @@ func join(input string) {
 		errorPrompt(fmt.Sprintf("could not fetch game:%s\n", s[1]))
 		return
 	}
-	res, err := http.Get(fmt.Sprintf(`%s/portfolio/%s`, api, user.ID))
+
+	portfolio, err := fetchPortfolio(user.ID, game.ID)
 	if err != nil {
-		errorPrompt(fmt.Sprintf(`could not fetch portfolios: %s`, err))
-	}
-	data, err := ReadResponse(res)
-	if err != nil {
-		errorPrompt(fmt.Sprintf(`could not parse api response: %s`, err))
-	}
-	p := models.Portfolio{
-		UserID: user.ID,
-		GameID: game.ID,
-		Cash:   game.Cap,
-		Value:  game.Cap,
-	}
-	portRes := models.APIPortfolioResponse{}
-	json.Unmarshal([]byte(data), &portRes)
-	for _, portfolio := range portRes.Data {
-		if portfolio.GameID == game.ID {
-			p = portfolio
-		}
-	}
-	if p.ID == "" {
-		portReq, err := http.Post(fmt.Sprintf(`%s/portfolio`, api), `application/json`, strings.NewReader(models.ToJson(p)))
-		if err != nil {
-			errorPrompt(fmt.Sprintf(`could not create portfolio: %s`, err))
-		}
-		porRes, err := ReadResponse(portReq)
-		if err != nil {
-			errorPrompt(fmt.Sprintf(`could not parse portfolio api response: %s`, err))
-		}
-		fmt.Printf("joined game: %s", porRes)
-		routerPrompt()
+		errorPrompt(fmt.Sprintf("could not fetch id:%s,game:%s\n", user.ID, game.ID))
+		return
 	}
 }
 
@@ -190,7 +163,7 @@ func routerPrompt() {
 
 func fetchGame(id string) (models.Game, error) {
 	game := models.Game{}
-	apiGame, err := http.Get(fmt.Sprintf("%s/game/%s", api, s[1]))
+	apiGame, err := http.Get(fmt.Sprintf("%s/game/%s", api, id))
 	if err != nil {
 		return game, err
 	}
@@ -204,4 +177,22 @@ func fetchGame(id string) (models.Game, error) {
 		return game, errors.New("coulld not fetch game data")
 	}
 	return gameRes.Data[0], nil
+}
+
+func fetchPortfolio(userID string, gameID string) (models.Portfolio, error){
+	portfolio := models.Portfolio{}
+
+	res, err := http.Get(fmt.Sprintf("%s/portfolio/%s/%s"))
+	if err != nil {
+		return portfolio, err
+	}
+	data, err := ReadResponse(res)
+	if err != nil {
+		return portfolio, err
+	}
+	portApiRes := models.APIPortfolioResponse{}
+	json.Unmarshal([]byte(data), &portApiRes)
+	
+	
+	return portfolio, nil
 }
