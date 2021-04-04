@@ -20,9 +20,9 @@ func main() {
 		return
 	}
 	ec = routes.NewEndpointContext(args)
-	log.Printf("papertrader-api starting @ %s:%s", args["local"], args["port"])
+	log.Printf("papertrader-api starting @ %s:%s", args["LOCAL"], args["PORT"])
 	router := mux.NewRouter()
-	//healthcheck
+	//healthcheck++
 	router.HandleFunc("/healthcheck", healthcheck).Methods("GET")
 	//setup
 	router.HandleFunc("/setup/database/data", ec.SetupTestData).Methods("GET")
@@ -52,29 +52,27 @@ func main() {
 
 func processFlags() map[string]string {
 	flags := map[string]string{}
-	port := flag.String("port", "8083", "-port=8083")
-	local := flag.String("local", "localhost", "-local=localhost")
-	token := flag.String("token", "637d7289-89a1-4f13-989a-14c6fc837600", "-token=foo")
-	db_url := flag.String("db_url", "http://localhost:8082", "-db_url=http://localhost:8082")
-	auth_url := flag.String("auth_url", "http://localhost:8081", "-auth_url=http://localhost:8081")
-	db_user := flag.String("db_user", "cassandra", "-db_user=cassandra")
-	db_pass := flag.String("db_pass", "cassandra", "-db_pass=cassandra")
-	av_url := flag.String("av_url", "https://www.alphavantage.co/", "av_url=https://www.alphavantage.co/")
-	av_token := flag.String("av_token", "HR9QB2RM5GWOO0IX", "-av_token=foo")
-	cmdline := flag.String("cmdline", "false", "-cmdline=false")
+	port := flag.String("PORT", "8083", "-PORT=8083")
+	local := flag.String("LOCAL", "localhost", "-LOCAL=localhost")
+	db_url := flag.String("DB_URL", "http://localhost:8082", "-DB_URL=http://localhost:8082")
+	auth_url := flag.String("AUTH_URL", "http://localhost:8081", "-AUTH_URL=http://localhost:8081")
+	db_user := flag.String("DB_USER", "cassandra", "-DB_USER=cassandra")
+	db_pass := flag.String("DB_PASS", "cassandra", "-DB_PASS=cassandra")
+	av_url := flag.String("AV_URL", "https://www.alphavantage.co/", "AV_URL=https://www.alphavantage.co/")
+	av_token := flag.String("AV_TOKEN", "HR9QB2RM5GWOO0IX", "-AV_TOKEN=foo")
+	cmdline := flag.String("CMDLINE", "false", "-CMDLINE=false")
 
 	flag.Parse()
 
-	flags["port"] = *port
-	flags["local"] = *local
-	flags["token"] = *token
-	flags["db_url"] = *db_url
-	flags["db_user"] = *db_user
-	flags["db_pass"] = *db_pass
-	flags["auth_url"] = *auth_url
-	flags["av_url"] = *av_url
-	flags["av_token"] = *av_token
-	flags["cmdline"] = *cmdline
+	flags["PORT"] = *port
+	flags["LOCAL"] = *local
+	flags["DB_URL"] = *db_url
+	flags["DB_USER"] = *db_user
+	flags["DB_PASS"] = *db_pass
+	flags["AUTH_URL"] = *auth_url
+	flags["AV_URL"] = *av_url
+	flags["AV_TOKEN"] = *av_token
+	flags["CMDLINE"] = *cmdline
 	return flags
 }
 

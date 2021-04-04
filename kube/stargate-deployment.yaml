@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: papertrader
   name: stargate
   labels:
     app.kubernetes.io/name: stargate
@@ -21,12 +22,21 @@ spec:
       - name: stargate
         image: stargateio/stargate-3_11:v1.0.7
         env:
-        - name: CLUSTER_NAME
-          value: "stargate"
-        - name: CLUSTER_VERSION
-          value: "3.11"
-        - name: DEVELOPER_MODE
-          value: "true"
+        - name: CLUSTER_NAME 
+          valueFrom:
+            configMapKeyRef:
+              name: globalconfigmap 
+              key: cluster_name
+        - name: CLUSTER_VERSION 
+          valueFrom:
+            configMapKeyRef:
+              name: globalconfigmap 
+              key: cluster_version
+        - name: DEVELOPER_MODE 
+          valueFrom:
+            configMapKeyRef:
+              name: globalconfigmap 
+              key: cluster_dev_mode
         ports:
         - containerPort: 8080
           hostPort: 8080

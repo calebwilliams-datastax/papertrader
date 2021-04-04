@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: papertrader
+  name: papertrader-api
+  labels:
+    app.kubernetes.io/name: papertrader-api
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: papertrader
+        app.kubernetes.io/component: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: papertrader
+        app.kubernetes.io/component: api
+    spec:  
+      containers:
+      - name: papertrader-api
+        image: calebwilliamsdatastax/papertrader-api
+        volumeMounts:
+        - mountPath: "/data/papertrader-api"
+          name: datastore
+      volumes:
+        - name: datastore
+          emptyDir: {}

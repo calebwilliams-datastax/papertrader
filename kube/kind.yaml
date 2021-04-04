@@ -13,5 +13,7 @@ nodes:
     hostPort: 8081
   - containerPort: 8082
     hostPort: 8082
+  - containerPort: 8083
+    hostPort: 8083
   - containerPort: 9042
     hostPort: 9042
