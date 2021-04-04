@@ -14,7 +14,7 @@ _the api assumes a configured database, you can get one running using the direct
 ```bash
 cd $GOPATH/src/github.com/papertrader-api/kube
 
-#push the newest api iamge
+#push the newest api image
 docker build -t calebwilliamsdatastax/papertrader-api .
 docker push calebwilliamsdatastax/papertrader-api
 ```

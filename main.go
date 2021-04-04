@@ -15,7 +15,7 @@ var ec routes.EndpointContext
 
 func main() {
 	args := processFlags()
-	if args["cmdline"] == "true" {
+	if args["CMDLINE"] == "true" {
 		util.Start(args)
 		return
 	}
@@ -33,26 +33,28 @@ func main() {
 	//games
 	router.HandleFunc("/game", ec.GameCreate).Methods("POST")
 	router.HandleFunc("/game/list", ec.GameList).Methods("GET")
+	router.HandleFunc("/game/{id}", ec.GameByID).Methods("GET")
 	router.HandleFunc("/game/delete/{id}", ec.GameDelete).Methods("POST")
 	//portfolios
 	router.HandleFunc("/portfolio", ec.PortfolioCreate).Methods("POST")
-	router.HandleFunc("/portfolio/{user_id}", ec.PortfolioByUserId).Methods("GET")
+	router.HandleFunc("/portfolio/{game_id}", ec.PortfolioByGameID).Methods("GET")
+	router.HandleFunc("/portfolio/{game_id}/{user_id}", ec.PortfolioByGameIDUserID).Methods("GET")
 	router.HandleFunc("/portfolio/delete/{id}", ec.PortfolioDelete).Methods("POST")
 	//orders
 	router.HandleFunc("/order/buy", ec.OrderCreate).Methods("POST")
 	router.HandleFunc("/order/sell", ec.OrderCreate).Methods("POST")
-	router.HandleFunc("/order/{id}", ec.GetOrderById).Methods("GET")
+	router.HandleFunc("/order/{id}", ec.GetOrderByID).Methods("GET")
 	router.HandleFunc("/order/delete/{id}", ec.PortfolioDelete).Methods("POST")
 	//market
 	router.HandleFunc("/market/price/{symbol}", ec.GetPrice).Methods("GET")
 	router.HandleFunc("/market/series/{symbol}", ec.TimeSeries).Methods("GET")
 	//start
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", args["local"], args["port"]), router))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", args["LOCAL"], args["PORT"]), router))
 }
 
 func processFlags() map[string]string {
 	flags := map[string]string{}
-	port := flag.String("PORT", "8083", "-PORT=8083")
+	port := flag.String("PORT", "8084", "-PORT=8084")
 	local := flag.String("LOCAL", "localhost", "-LOCAL=localhost")
 	db_url := flag.String("DB_URL", "http://localhost:8082", "-DB_URL=http://localhost:8082")
 	auth_url := flag.String("AUTH_URL", "http://localhost:8081", "-AUTH_URL=http://localhost:8081")

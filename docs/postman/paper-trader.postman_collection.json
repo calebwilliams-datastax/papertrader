@@ -20,7 +20,7 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "d9382224-2f66-4ce1-942a-bafce599f98b",
+								"value": "ba7e8dbd-f880-48ec-a13e-3c235eace5a7",
 								"type": "text"
 							}
 						],
@@ -57,7 +57,7 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "d9382224-2f66-4ce1-942a-bafce599f98b",
+								"value": "f05fe598-0180-4eb4-aa1a-cc57a1560f9a",
 								"type": "text"
 							}
 						],
@@ -94,14 +94,14 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "d9382224-2f66-4ce1-942a-bafce599f98b",
+								"value": "f05fe598-0180-4eb4-aa1a-cc57a1560f9a",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation createTables {\n\tusers: createTable(\n\t  keyspaceName:\"papertrader\"\n\t  tableName:\"users\"\n\t  partitionKeys: [ \n        { name: \"name\", type: {basic: TEXT }}\n\t  ],\n      \n      values: [\n          { name: \"id\", type: {basic: TEXT} }\n          { name: \"email\", type: {basic: TEXT }}\n          { name: \"created\", type: {basic :TEXT }}\n      ]\n\t)\n\tgames: createTable(\n\t\tkeyspaceName:\"papertrader\",\n\t\ttableName:\"games\",\n\t\tpartitionKeys: [ \n\t\t  { name: \"id\", type: {basic: TEXT} }\n\t\t],\n        values: [\n            { name: \"cap\", type: {basic: TEXT }},\n            { name: \"created\", type: {basic: TEXT }},\n            { name: \"created_by\", type : {basic: TEXT }},\n            { name: \"name\", type : {basic: TEXT }},\n            { name: \"end\", type: {basic: TEXT }}\n        ]\n\t  )\n    portfolios: createTable (\n        keyspaceName:\"papertrader\",\n        tableName:\"portfolios\",\n        partitionKeys: [\n            {name: \"id\", type:{basic: TEXT}},\n            {name: \"user_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n            {name: \"game_id\", type: {basic: TEXT }},\n        ],\n        values: [\n            {name:\"created\", type:{basic: TEXT }}\n            {name: \"cash\", type: {basic: TEXT}},\n            {name: \"spent\", type: {basic: TEXT }},\n            {name: \"value\", type: { basic: TEXT }}\n        ]\n    )\n    orders: createTable (\n        keyspaceName: \"papertrader\",\n        tableName: \"orders\",\n        partitionKeys: [\n            {name: \"id\", type:{basic: TEXT}}\n        ],\n        clusteringKeys: [\n            {name: \"user_id\", type: {basic: TEXT }},\n            {name: \"portfolio_id\", type: {basic: TEXT }},\n        ],\n        values: [\n            {name: \"symbol\", type: { basic: TEXT }},\n            {name: \"action\", type: {basic : INT }},\n            {name: \"created\", type: {basic: TEXT }},\n            {name: \"closed\", type: {basic: TEXT }},\n            {name: \"type\", type: {basic: INT }},\n            {name: \"ask\", type: {basic: TEXT }}\n            {name: \"actual\", type:{ basic: TEXT }}\n        ]\n    )\n  }",
+								"query": "mutation createTables {\n\tusers: createTable(\n\t  keyspaceName:\"papertrader\"\n\t  tableName:\"users\"\n\t  partitionKeys: [ \n        { name: \"name\", type: {basic: TEXT }}\n\t  ],\n      \n      values: [\n          { name: \"id\", type: {basic: TEXT} }\n          { name: \"email\", type: {basic: TEXT }}\n          { name: \"created\", type: {basic :TEXT }}\n      ]\n\t)\n\tgames: createTable(\n\t\tkeyspaceName:\"papertrader\",\n\t\ttableName:\"games\",\n\t\tpartitionKeys: [ \n\t\t  { name: \"id\", type: {basic: TEXT} }\n\t\t],\n        values: [\n            { name: \"cap\", type: {basic: TEXT }},\n            { name: \"created\", type: {basic: TEXT }},\n            { name: \"created_by\", type : {basic: TEXT }},\n            { name: \"name\", type : {basic: TEXT }},\n            { name: \"end\", type: {basic: TEXT }}\n        ]\n\t  )\n    portfolios: createTable (\n        keyspaceName:\"papertrader\",\n        tableName:\"portfolios\",\n        partitionKeys: [\n            {name: \"game_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n          {name: \"user_id\", type: {basic: TEXT }}\n        ],\n        values: [\n            {name: \"id\", type:{basic: TEXT}},\n            {name:\"created\", type:{basic: TEXT }}\n            {name: \"cash\", type: {basic: TEXT}},\n            {name: \"spent\", type: {basic: TEXT }},\n            {name: \"value\", type: { basic: TEXT }}\n        ]\n    )\n    orders: createTable (\n        keyspaceName: \"papertrader\",\n        tableName: \"orders\",\n        partitionKeys: [\n            {name: \"portfolio_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n            {name: \"user_id\", type: {basic: TEXT }},\n            {name: \"id\", type:{basic: TEXT}}\n        ],\n        values: [\n            {name: \"symbol\", type: { basic: TEXT }},\n            {name: \"action\", type: {basic : INT }},\n            {name: \"created\", type: {basic: TEXT }},\n            {name: \"closed\", type: {basic: TEXT }},\n            {name: \"type\", type: {basic: INT }},\n            {name: \"ask\", type: {basic: TEXT }},\n            {name: \"amount\", type: {basic: INT}},\n            {name: \"actual\", type:{ basic: TEXT }}\n        ]\n    )\n  }",
 								"variables": ""
 							}
 						},
@@ -311,44 +311,6 @@
 			"name": "stargate_http",
 			"item": [
 				{
-					"name": "user_table_create",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Cassandra-Token",
-								"value": "7f33a7d6-6ca5-47b5-a036-226ff6a1564e",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"users\",\n\t\"columnDefinitions\":\n\t  [\n        {\n            \"name\": \"name\",\n            \"typeDefinition\":\"text\"\n        },\n        {\n\t      \"name\": \"email\",\n\t      \"typeDefinition\": \"text\"\n\t    },\n        {\n\t      \"name\": \"id\",\n\t      \"typeDefinition\": \"text\"\n\t    },\n        {\n            \"name\": \"created\",\n            \"typeDefinition\": \"text\"\n        }\n\t  ],\n\t\"primaryKey\":\n\t  {\n\t    \"partitionKey\": [\"name\"]\n\t  },\n\t\"tableOptions\":\n\t  {\n\t    \"defaultTimeToLive\": 0\n\t  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8082/v2/schemas/keyspaces/papertrader/tables",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"v2",
-								"schemas",
-								"keyspaces",
-								"papertrader",
-								"tables"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "game_object_get",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -433,27 +395,18 @@
 					"response": []
 				},
 				{
-					"name": "user_object_create Copy",
+					"name": "object_get",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "X-Cassandra-Token",
-								"value": "7f33a7d6-6ca5-47b5-a036-226ff6a1564e",
+								"value": "dbd30843-4225-4831-939f-5d11e0f1c30c",
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"users\",\n\t\"columnDefinitions\":\n\t  [\n        {\n            \"name\": \"name\",\n            \"typeDefinition\":\"text\"\n        },\n        {\n\t      \"name\": \"email\",\n\t      \"typeDefinition\": \"text\"\n\t    },\n        {\n\t      \"name\": \"id\",\n\t      \"typeDefinition\": \"text\"\n\t    },\n        {\n            \"name\": \"created\",\n            \"typeDefinition\": \"text\"\n        }\n\t  ],\n\t\"primaryKey\":\n\t  {\n\t    \"partitionKey\": [\"name\"]\n\t  },\n\t\"tableOptions\":\n\t  {\n\t    \"defaultTimeToLive\": 0\n\t  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8082/v2/schemas/keyspaces/papertrader/tables",
+							"raw": "http://localhost:8082/v2/keyspaces/papertrader/orders?where={}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -461,29 +414,34 @@
 							"port": "8082",
 							"path": [
 								"v2",
-								"schemas",
 								"keyspaces",
 								"papertrader",
-								"tables"
+								"orders"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{}"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "games_table_create",
+					"name": "portfolio_object_create",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "X-Cassandra-Token",
-								"value": "7f33a7d6-6ca5-47b5-a036-226ff6a1564e",
+								"value": "9943ccc0-1513-4da7-ac1e-c66ea6bbff74",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\" : \"papertrader\"\n}",
+							"raw": "\n{\n    \"id\":\"16175207216e37\",\n    \"created\": \"\",\n    \"game_id\":\"16175163566e37\",\n    \"user_id\":\"16175164151ee5\",\n    \"cash\":\"1000000.00\",\n    \"spent\":\"0.00\",\n    \"value\":\"1000000.00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -491,7 +449,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/v2/schemas/keyspaces",
+							"raw": "http://localhost:8082/v2/keyspaces/papertrader/portfolios",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -499,80 +457,9 @@
 							"port": "8082",
 							"path": [
 								"v2",
-								"schemas",
-								"keyspaces"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "portfolio_table_create",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Cassandra-Token",
-								"value": "7f33a7d6-6ca5-47b5-a036-226ff6a1564e",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\" : \"papertrader\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8082/v2/schemas/keyspaces",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"v2",
-								"schemas",
-								"keyspaces"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "keyspace_create",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Cassandra-Token",
-								"value": "7f33a7d6-6ca5-47b5-a036-226ff6a1564e",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\" : \"papertrader\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8082/v2/schemas/keyspaces",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"v2",
-								"schemas",
-								"keyspaces"
+								"keyspaces",
+								"papertrader",
+								"portfolios"
 							]
 						}
 					},
@@ -585,6 +472,139 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "app-api",
+			"item": [
+				{
+					"name": "papertrader-api-testdata",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/setup/database/data",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"setup",
+								"database",
+								"data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "papertrader-user_get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/user/caleb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"user",
+								"caleb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "papertrader-user_create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"caleb\",\n    \"email\" : \"caleb.williams@datastax.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "papertrader-order_create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"\",\"user_id\":\"1617521148e416\",\"portfolio_id\":\"16175218126e37\",\"symbol\":\"buy\",\"created\":\"0001-01-01T00:00:00Z\",\"closed\":\"0001-01-01T00:00:00Z\",\"action\":0,\"type\":0,\"amount\":5,\"ask\":\"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/order/buy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"order",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "papertrader-portfolio_create",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/game/16175164151ee5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"game",
+								"16175164151ee5"
+							]
 						}
 					},
 					"response": []
@@ -615,85 +635,6 @@
 					"path": [
 						"v1",
 						"auth"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "papertrader-api-testdata",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "",
-						"variables": ""
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8083/setup/database/delete",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8083",
-					"path": [
-						"setup",
-						"database",
-						"delete"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "papertrader-user_create",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"caleb\",\n    \"email\" : \"caleb.williams@datastax.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8083/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8083",
-					"path": [
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "papertrader-user_get",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8083/user/caleb",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8083",
-					"path": [
-						"user",
-						"caleb"
 					]
 				}
 			},

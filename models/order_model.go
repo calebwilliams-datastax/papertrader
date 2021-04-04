@@ -18,6 +18,14 @@ type Order struct {
 	Closed      time.Time   `json:"closed"`
 	OrderAction OrderAction `json:"action"`
 	OrderType   OrderType   `json:"type"`
+	Amount      int         `json:"amount"`
+	Ask         string      `json:"ask"`
+	Actual      string      `json:"actual"`
+}
+
+func (o *Order) SetDefaults() {
+	o.ID = GenerateID()
+	o.Created = time.Now()
 }
 
 type OrderAction int

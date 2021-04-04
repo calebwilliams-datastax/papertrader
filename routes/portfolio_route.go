@@ -11,32 +11,37 @@ import (
 	"github.com/papertrader-api/util"
 )
 
-func (e *EndpointContext) PortfolioByUserId(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("PortfolioByUserId\n")
+func (e *EndpointContext) PortfolioByGameID(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("PortfolioByGameID\n")
+	util.LogRequest(r)
 	params := mux.Vars(r)
-	code, res, err := e.GetByClause("portfolios", "$eq", "user_id", []string{params["user_id"]})
+	code, res, err := e.GetByClause("portfolios", "$eq", "game_id", []string{params["game_id"]})
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, res)
 	w.WriteHeader(code)
 	w.Write([]byte(res))
 }
 
-func (e *EndpointContext) PortfolioByUserIdGameId(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("PortfolioByUserIdGameId\n")
+func (e *EndpointContext) PortfolioByGameIDUserID(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("PortfolioByUserIDGameID\n")
+	util.LogRequest(r)
 	params := mux.Vars(r)
-	code, res, err := e.GetByClause("portfolios", "$eq", "user_id", []string{params["user_id"]})
+	code, res, err := e.GetByClause("portfolios", "$eq", "game_id", []string{params["game_id"]})
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, res)
 	w.WriteHeader(code)
 	w.Write([]byte(res))
 }
 
 func (e *EndpointContext) PortfolioCreate(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("PortfolioCreate\n")
+	util.LogRequest(r)
 	res, err := util.ReadRequestBody(r)
 	if err != nil {
 		util.HandleError(w, r, err)
@@ -46,17 +51,19 @@ func (e *EndpointContext) PortfolioCreate(w http.ResponseWriter, r *http.Request
 	json.Unmarshal([]byte(res), &portfolio)
 	portfolio.SetDefaults()
 
-	code, insert, err := e.PostDB("portfolio", portfolio)
+	code, res, err := e.PostDB("portfolios", portfolio)
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, res)
 	w.WriteHeader(code)
-	w.Write([]byte(insert))
+	w.Write([]byte(models.ToJson(portfolio)))
 }
 
 func (e *EndpointContext) PortfolioUpdate(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("PortfolioUpdate\n")
+	util.LogRequest(r)
 	res, err := util.ReadRequestBody(r)
 	if err != nil {
 		util.HandleError(w, r, err)
@@ -65,17 +72,19 @@ func (e *EndpointContext) PortfolioUpdate(w http.ResponseWriter, r *http.Request
 	portfolio := models.Portfolio{}
 	json.Unmarshal([]byte(res), &portfolio)
 
-	code, dbres, err := e.PutDB("portfolio", portfolio)
+	code, dbRes, err := e.PutDB("portfolio", portfolio)
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, dbRes)
 	w.WriteHeader(code)
-	w.Write([]byte(dbres))
+	w.Write([]byte(dbRes))
 }
 
 func (e *EndpointContext) PortfolioDelete(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("PortfolioDelete\n")
+	util.LogRequest(r)
 	res, err := util.ReadRequestBody(r)
 	if err != nil {
 		util.HandleError(w, r, err)
@@ -92,6 +101,7 @@ func (e *EndpointContext) PortfolioDelete(w http.ResponseWriter, r *http.Request
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, dbRes)
 	w.WriteHeader(code)
 	w.Write([]byte(dbRes))
 }

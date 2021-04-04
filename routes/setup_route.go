@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"github.com/papertrader-api/models"
+	"github.com/papertrader-api/util"
 )
 
 func (ec *EndpointContext) SetupTestData(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("SetupTestData\n")
+	util.LogRequest(r)
 	ec.RefreshAuthToken()
 	res := map[string]string{}
 	user := models.User{

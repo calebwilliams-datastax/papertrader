@@ -95,6 +95,7 @@ func (e *EndpointContext) GetByClause(table, clause, column string, values []str
 	client := http.Client{}
 	where := models.Where(clause, column, values)
 	url := fmt.Sprintf(`%s?where=%s`, e.Endpoints[table], where)
+	fmt.Printf("fetching object: %s, url:%s\n", table, url)
 	req, err := util.BuildGETRequest(url, e.Headers)
 	if err != nil {
 		return 500, "", err
@@ -137,6 +138,7 @@ func (e *EndpointContext) PostDB(table string, v interface{}) (int, string, erro
 	if e.TimeToRefresh() {
 		e.RefreshAuthToken()
 	}
+	fmt.Printf("post db : table: %s, obj: %+v", table, v)
 	client := http.Client{}
 	defer client.CloseIdleConnections()
 	req, err := util.BuildPOSTRequest(e.Endpoints[table],
@@ -207,7 +209,7 @@ func (e *EndpointContext) RefreshAuthToken() error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("auth res: %s\n", string(raw))
+	fmt.Printf("auth res status: %v\n", res.StatusCode)
 	data := map[string]string{}
 	if err := json.Unmarshal(raw, &data); err != nil {
 		return err
