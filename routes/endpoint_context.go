@@ -43,7 +43,7 @@ func NewEndpointContext(args map[string]string) EndpointContext {
 			"games":      fmt.Sprintf("%s/v2/keyspaces/papertrader/games", args["DB_URL"]),
 			"portfolios": fmt.Sprintf("%s/v2/keyspaces/papertrader/portfolios", args["DB_URL"]),
 			"orders":     fmt.Sprintf("%s/v2/keyspaces/papertrader/orders", args["DB_URL"]),
-			"keyspace":   fmt.Sprintf("%sv2/schemas/keyspaces", args["DB_URL"]),
+			"keyspace":   fmt.Sprintf("%s/v2/schemas/keyspaces", args["DB_URL"]),
 			"delete":     fmt.Sprintf("%s/v2/keyspaces/papertrader", args["DB_URL"]),
 		},
 		Auth: Auth{
@@ -138,7 +138,7 @@ func (e *EndpointContext) PostDB(table string, v interface{}) (int, string, erro
 	if e.TimeToRefresh() {
 		e.RefreshAuthToken()
 	}
-	fmt.Printf("post db : table: %s, obj: %+v", table, v)
+	fmt.Printf("post db : table: %s\nobj: %+v\n", table, v)
 	client := http.Client{}
 	defer client.CloseIdleConnections()
 	req, err := util.BuildPOSTRequest(e.Endpoints[table],

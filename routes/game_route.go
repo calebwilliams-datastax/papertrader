@@ -17,6 +17,7 @@ func (e *EndpointContext) GameList(w http.ResponseWriter, r *http.Request) {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, res)
 	w.WriteHeader(code)
 	w.Write([]byte(res))
 }
@@ -58,6 +59,7 @@ func (e *EndpointContext) GameCreate(w http.ResponseWriter, r *http.Request) {
 		util.HandleError(w, r, err)
 		return
 	}
+	util.LogResponse(code, res)
 	w.WriteHeader(code)
 	w.Write([]byte(insert))
 }

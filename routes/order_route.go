@@ -25,13 +25,14 @@ func (e *EndpointContext) OrderCreate(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(res), &order)
 	order.SetDefaults()
 
-	code, _, err := e.PostDB("orders", order)
+	code, dbRes, err := e.PostDB("orders", order)
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
-	util.LogResponse(code, res)
+	util.LogResponse(code, dbRes)
 	w.WriteHeader(code)
+
 	w.Write([]byte(models.ToJson(order)))
 }
 

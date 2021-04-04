@@ -200,7 +200,8 @@ func buy(input string) {
 		errorPrompt(fmt.Sprintf("error creating order. ID not set"))
 		return
 	}
-	fmt.Printf("order created:\n- id: %s\n- symbol: %s\n- created: %s", order.ID, order.Symbol, order.Created)
+	fmt.Printf("order created:\n--------\n- id: %s\n- symbol: %s\n- created: %s\n--------\n", order.ID, order.Symbol, order.Created)
+	routerPrompt()
 }
 
 func errorPrompt(text string) {
