@@ -7,10 +7,21 @@ import (
 
 	"github.com/calebwilliams-datastax/papertrader-api/models"
 	"github.com/calebwilliams-datastax/papertrader-api/util"
+	"github.com/gorilla/mux"
 )
 
-func (db *EndpointContext) GetOrderByID(w http.ResponseWriter, r *http.Request) {
+func (e *EndpointContext) OrdersByPortfolioID(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("OrdersByPortfolioID\n")
 	util.LogRequest(r)
+	params := mux.Vars(r)
+	code, res, err := e.GetByClause("orders", "$eq", "portfolio_id", []string{params["portfolio_id"]})
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	util.LogResponse(code, res)
+	w.WriteHeader(code)
+	w.Write([]byte(res))
 }
 
 func (e *EndpointContext) OrderCreate(w http.ResponseWriter, r *http.Request) {

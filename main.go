@@ -33,6 +33,7 @@ func main() {
 	//games
 	router.HandleFunc("/game", ec.GameCreate).Methods("POST")
 	router.HandleFunc("/game/list", ec.GameList).Methods("GET")
+	router.HandleFunc("/game/list/open", ec.GameListOpen).Methods("GET")
 	router.HandleFunc("/game/{id}", ec.GameByID).Methods("GET")
 	router.HandleFunc("/game/delete/{id}", ec.GameDelete).Methods("POST")
 	//portfolios
@@ -43,8 +44,8 @@ func main() {
 	//orders
 	router.HandleFunc("/order/buy", ec.OrderCreate).Methods("POST")
 	router.HandleFunc("/order/sell", ec.OrderCreate).Methods("POST")
-	router.HandleFunc("/order/{id}", ec.GetOrderByID).Methods("GET")
 	router.HandleFunc("/order/delete/{id}", ec.PortfolioDelete).Methods("POST")
+	router.HandleFunc("/order/portfolio/{portfolio_id}", ec.OrdersByPortfolioID).Methods("GET")
 	//market
 	router.HandleFunc("/market/price/{symbol}", ec.GetPrice).Methods("GET")
 	router.HandleFunc("/market/series/{symbol}", ec.TimeSeries).Methods("GET")

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/calebwilliams-datastax/papertrader-api/models"
 	"github.com/calebwilliams-datastax/papertrader-api/util"
@@ -11,15 +12,43 @@ import (
 )
 
 func (e *EndpointContext) GameList(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("ListGames\n")
+	fmt.Printf("GameList\n")
 	code, res, err := e.GetAll("games")
 	if err != nil {
 		util.HandleError(w, r, err)
 		return
 	}
+
 	util.LogResponse(code, res)
 	w.WriteHeader(code)
 	w.Write([]byte(res))
+}
+
+func (e *EndpointContext) GameListOpen(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("GameOpenList\n")
+	_, res, err := e.GetAll("games")
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	empty := time.Time{}
+	open := []models.Game{}
+	gamesApi := models.APIGameResponse{}
+	json.Unmarshal([]byte(res), &gamesApi)
+	for _, game := range gamesApi.Data {
+		if game.End == empty {
+			open = append(open, game)
+		}
+	}
+	gamesApi.Count = len(open)
+	gamesApi.Data = open
+	data, err := json.Marshal(gamesApi)
+	if err != nil {
+		util.HandleError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
 }
 
 func (e *EndpointContext) GameByID(w http.ResponseWriter, r *http.Request) {
