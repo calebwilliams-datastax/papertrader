@@ -12,7 +12,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/papertrader-api/models"
+	"github.com/calebwilliams-datastax/papertrader-api/models"
 )
 
 var (

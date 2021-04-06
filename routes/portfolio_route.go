@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/calebwilliams-datastax/papertrader-api/models"
+	"github.com/calebwilliams-datastax/papertrader-api/util"
 	"github.com/gorilla/mux"
-	"github.com/papertrader-api/models"
-	"github.com/papertrader-api/util"
 )
 
 func (e *EndpointContext) PortfolioByGameID(w http.ResponseWriter, r *http.Request) {

@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/calebwilliams-datastax/papertrader-api/routes"
+	"github.com/calebwilliams-datastax/papertrader-api/util"
 	"github.com/gorilla/mux"
-	"github.com/papertrader-api/routes"
-	"github.com/papertrader-api/util"
 )
 
 var ec routes.EndpointContext
@@ -22,7 +22,7 @@ func main() {
 	ec = routes.NewEndpointContext(args)
 	log.Printf("papertrader-api starting @ %s:%s", args["LOCAL"], args["PORT"])
 	router := mux.NewRouter()
-	//healthcheck++
+	//healthcheck
 	router.HandleFunc("/healthcheck", healthcheck).Methods("GET")
 	//setup
 	router.HandleFunc("/setup/database/data", ec.SetupTestData).Methods("GET")

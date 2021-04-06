@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/calebwilliams-datastax/papertrader-api/market"
+	"github.com/calebwilliams-datastax/papertrader-api/models"
+	"github.com/calebwilliams-datastax/papertrader-api/util"
 	"github.com/gorilla/mux"
-	"github.com/papertrader-api/market"
-	"github.com/papertrader-api/models"
-	"github.com/papertrader-api/util"
 )
 
 func (e *EndpointContext) GetPrice(w http.ResponseWriter, r *http.Request) {

@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/papertrader-api/market"
-	"github.com/papertrader-api/models"
-	"github.com/papertrader-api/util"
+	"github.com/calebwilliams-datastax/papertrader-api/market"
+	"github.com/calebwilliams-datastax/papertrader-api/models"
+	"github.com/calebwilliams-datastax/papertrader-api/util"
 )
 
 type EndpointContext struct {

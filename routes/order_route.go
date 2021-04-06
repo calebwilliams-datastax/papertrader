@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/papertrader-api/models"
-	"github.com/papertrader-api/util"
+	"github.com/calebwilliams-datastax/papertrader-api/models"
+	"github.com/calebwilliams-datastax/papertrader-api/util"
 )
 
 func (db *EndpointContext) GetOrderByID(w http.ResponseWriter, r *http.Request) {
