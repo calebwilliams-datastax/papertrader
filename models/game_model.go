@@ -8,7 +8,8 @@ type Game struct {
 	CreatedBy string    `json:"created_by"`
 	Name      string    `json:"name"`
 	End       time.Time `json:"end"`
-	Cap       string   `json:"cap"`
+	Cap       string    `json:"cap"`
+	Finalized bool      `json:"finalized"`
 }
 
 type APIGameResponse struct {
