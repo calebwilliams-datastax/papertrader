@@ -56,7 +56,7 @@ func NewEndpointContext(args map[string]string) EndpointContext {
 		},
 	}
 	if err := context.RefreshAuthToken(); err != nil {
-		log.Fatalf(`could not generate authentication token db`)
+		log.Fatalf(fmt.Sprintf(`could not generate authentication token db: %s`, err))
 	}
 	return context
 }
@@ -64,10 +64,7 @@ func NewEndpointContext(args map[string]string) EndpointContext {
 func (e *EndpointContext) TimeToRefresh() bool {
 	expiry := e.Auth.TokenTime.Add(time.Minute * 30)
 	now := time.Now()
-	if now.Unix() > expiry.Unix() {
-		return true
-	}
-	return false
+	return now.Unix() > expiry.Unix()
 }
 
 func (e *EndpointContext) GetAll(table string) (int, string, error) {
