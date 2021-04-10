@@ -21,6 +21,7 @@ type Order struct {
 	Amount      int         `json:"amount"`
 	Ask         string      `json:"ask"`
 	Actual      string      `json:"actual"`
+	Finalized   bool        `json:"finalized"`
 }
 
 func (o *Order) SetDefaults() {
