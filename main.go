@@ -19,6 +19,7 @@ func main() {
 		util.Start(args)
 		return
 	}
+	log.Printf("main : args: %+v", args)
 	ec = routes.NewEndpointContext(args)
 	log.Printf("papertrader-api starting @ %s:%s", args["LOCAL"], args["PORT"])
 	router := mux.NewRouter()
