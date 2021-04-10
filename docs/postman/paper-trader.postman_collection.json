@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4d298816-07a6-4c69-bbd3-ef09d07e23a8",
+		"_postman_id": "07979f0c-96f6-438a-a43f-fcfb59586fe5",
 		"name": "paper-trader",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -20,7 +20,7 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "ba7e8dbd-f880-48ec-a13e-3c235eace5a7",
+								"value": "307af71a-afbc-4d53-bbbf-da6f2de3f057",
 								"type": "text"
 							}
 						],
@@ -57,7 +57,7 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "f05fe598-0180-4eb4-aa1a-cc57a1560f9a",
+								"value": "7d1b84f4-05b8-46f5-8568-9dbf88e7e3e2",
 								"type": "text"
 							}
 						],
@@ -94,14 +94,14 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "f05fe598-0180-4eb4-aa1a-cc57a1560f9a",
+								"value": "7d1b84f4-05b8-46f5-8568-9dbf88e7e3e2",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation createTables {\n\tusers: createTable(\n\t  keyspaceName:\"papertrader\"\n\t  tableName:\"users\"\n\t  partitionKeys: [ \n        { name: \"name\", type: {basic: TEXT }}\n\t  ],\n      \n      values: [\n          { name: \"id\", type: {basic: TEXT} }\n          { name: \"email\", type: {basic: TEXT }}\n          { name: \"created\", type: {basic :TEXT }}\n      ]\n\t)\n\tgames: createTable(\n\t\tkeyspaceName:\"papertrader\",\n\t\ttableName:\"games\",\n\t\tpartitionKeys: [ \n\t\t  { name: \"id\", type: {basic: TEXT} }\n\t\t],\n        values: [\n            { name: \"cap\", type: {basic: TEXT }},\n            { name: \"created\", type: {basic: TEXT }},\n            { name: \"created_by\", type : {basic: TEXT }},\n            { name: \"name\", type : {basic: TEXT }},\n            { name: \"end\", type: {basic: TEXT }}\n        ]\n\t  )\n    portfolios: createTable (\n        keyspaceName:\"papertrader\",\n        tableName:\"portfolios\",\n        partitionKeys: [\n            {name: \"game_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n          {name: \"user_id\", type: {basic: TEXT }}\n        ],\n        values: [\n            {name: \"id\", type:{basic: TEXT}},\n            {name:\"created\", type:{basic: TEXT }}\n            {name: \"cash\", type: {basic: TEXT}},\n            {name: \"spent\", type: {basic: TEXT }},\n            {name: \"value\", type: { basic: TEXT }}\n        ]\n    )\n    orders: createTable (\n        keyspaceName: \"papertrader\",\n        tableName: \"orders\",\n        partitionKeys: [\n            {name: \"portfolio_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n            {name: \"user_id\", type: {basic: TEXT }},\n            {name: \"id\", type:{basic: TEXT}}\n        ],\n        values: [\n            {name: \"symbol\", type: { basic: TEXT }},\n            {name: \"action\", type: {basic : INT }},\n            {name: \"created\", type: {basic: TEXT }},\n            {name: \"closed\", type: {basic: TEXT }},\n            {name: \"type\", type: {basic: INT }},\n            {name: \"ask\", type: {basic: TEXT }},\n            {name: \"amount\", type: {basic: INT}},\n            {name: \"actual\", type:{ basic: TEXT }}\n        ]\n    )\n  }",
+								"query": "mutation createTables {\n\tusers: createTable(\n\t  keyspaceName:\"papertrader\"\n\t  tableName:\"users\"\n\t  partitionKeys: [ \n        { name: \"name\", type: {basic: TEXT }}\n\t  ],\n      \n      values: [\n          { name: \"id\", type: {basic: TEXT} }\n          { name: \"email\", type: {basic: TEXT }}\n          { name: \"created\", type: {basic :TEXT }}\n      ]\n\t)\n\tgames: createTable(\n\t\tkeyspaceName:\"papertrader\",\n\t\ttableName:\"games\",\n\t\tpartitionKeys: [ \n\t\t  { name: \"id\", type: {basic: TEXT} }\n\t\t],\n        values: [\n            { name: \"cap\", type: {basic: TEXT }},\n            { name: \"created\", type: {basic: TEXT }},\n            { name: \"created_by\", type : {basic: TEXT }},\n            { name: \"name\", type : {basic: TEXT }},\n            { name: \"end\", type: {basic: TEXT }},\n            { name: \"finalized\", type: {basic: BOOLEAN }}\n        ]\n\t  )\n    portfolios: createTable (\n        keyspaceName:\"papertrader\",\n        tableName:\"portfolios\",\n        partitionKeys: [\n            {name: \"game_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n          {name: \"user_id\", type: {basic: TEXT }}\n        ],\n        values: [\n            {name: \"id\", type:{basic: TEXT}},\n            {name:\"created\", type:{basic: TEXT }}\n            {name: \"cash\", type: {basic: TEXT}},\n            {name: \"spent\", type: {basic: TEXT }},\n            {name: \"value\", type: { basic: TEXT }}\n        ]\n    )\n    orders: createTable (\n        keyspaceName: \"papertrader\",\n        tableName: \"orders\",\n        partitionKeys: [\n            {name: \"portfolio_id\", type: {basic: TEXT }}\n        ],\n        clusteringKeys: [\n            {name: \"user_id\", type: {basic: TEXT }},\n            {name: \"id\", type:{basic: TEXT}}\n        ],\n        values: [\n            {name: \"symbol\", type: { basic: TEXT }},\n            {name: \"action\", type: {basic : INT }},\n            {name: \"created\", type: {basic: TEXT }},\n            {name: \"closed\", type: {basic: TEXT }},\n            {name: \"type\", type: {basic: INT }},\n            {name: \"ask\", type: {basic: TEXT }},\n            {name: \"amount\", type: {basic: INT}},\n            {name: \"actual\", type:{ basic: TEXT }},\n            {name: \"finalized\", type:{basic: BOOLEAN }}\n        ]\n    )\n  }",
 								"variables": ""
 							}
 						},
@@ -242,7 +242,7 @@
 							},
 							{
 								"key": "X-Cassandra-Token",
-								"value": "9a1e3001-95bc-4b10-9ad9-f35eb161b379",
+								"value": "307af71a-afbc-4d53-bbbf-da6f2de3f057",
 								"type": "text"
 							}
 						],
@@ -518,15 +518,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8084/user/caleb",
+							"raw": "http://localhost:8084/game/list",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8084",
 							"path": [
-								"user",
-								"caleb"
+								"game",
+								"list"
 							]
 						}
 					},

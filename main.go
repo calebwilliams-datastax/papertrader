@@ -47,7 +47,7 @@ func main() {
 	router.HandleFunc("/order/delete/{id}", ec.PortfolioDelete).Methods("POST")
 	router.HandleFunc("/order/portfolio/{portfolio_id}", ec.OrdersByPortfolioID).Methods("GET")
 	//market
-	router.HandleFunc("/market/price/{symbol}", ec.GetPrice).Methods("GET")
+	router.HandleFunc("/market/price/{symbol}/{unix_time}", ec.GetPrice).Methods("GET")
 	router.HandleFunc("/market/series/{symbol}", ec.TimeSeries).Methods("GET")
 	//start
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", args["LOCAL"], args["PORT"]), router))

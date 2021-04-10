@@ -28,8 +28,9 @@ func (ec *EndpointContext) SetupTestData(w http.ResponseWriter, r *http.Request)
 		Name:      "default game",
 		Cap:       "1000000.00",
 		End:       time.Now().AddDate(0, 1, 0),
-		Created: time.Now(),
+		Created:   time.Now(),
 		CreatedBy: user.ID,
+		Finalized: false,
 	}
 	portfolio := models.Portfolio{
 		ID:      models.GenerateID(),

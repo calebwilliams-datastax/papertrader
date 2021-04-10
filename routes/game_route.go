@@ -31,12 +31,12 @@ func (e *EndpointContext) GameListOpen(w http.ResponseWriter, r *http.Request) {
 		util.HandleError(w, r, err)
 		return
 	}
-	empty := time.Time{}
+
 	open := []models.Game{}
 	gamesApi := models.APIGameResponse{}
 	json.Unmarshal([]byte(res), &gamesApi)
 	for _, game := range gamesApi.Data {
-		if game.End == empty {
+		if time.Now().Unix() < game.End.Unix() {
 			open = append(open, game)
 		}
 	}

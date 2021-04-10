@@ -1,11 +1,9 @@
 package routes
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/calebwilliams-datastax/papertrader-api/market"
 	"github.com/calebwilliams-datastax/papertrader-api/models"
@@ -17,6 +15,8 @@ func (e *EndpointContext) GetPrice(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("PortfolioCreate\n")
 	params := mux.Vars(r)
 	symbol := params["symbol"]
+	time := params["unix_time"]
+
 	if symbol == "" {
 		util.HandleError(w, r, errors.New("could not parse symbol"))
 		return
@@ -27,18 +27,14 @@ func (e *EndpointContext) GetPrice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(200)
-	w.Write([]byte(fmt.Sprintf(`{"symbol":"%s", "price":%v, "time":"%s"}`, symbol, price, time.Now().Local().String())))
+	w.Write([]byte(fmt.Sprintf(`{"symbol":"%s", "price":%v, "time":"%s"}`, symbol, price, time)))
 }
 
 func (e *EndpointContext) TimeSeries(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("TimeSeries\n")
 	params := mux.Vars(r)
 	symbol := params["symbol"]
-	json.Unmarshal([]byte(symbol), &symbol)
-	if symbol == "" {
-		util.HandleError(w, r, errors.New("could not parse symbol"))
-		return
-	}
+
 	series, err := market.TimeSeriesIntraday(symbol, 60, e.AVConfig)
 	if err != nil {
 		util.HandleError(w, r, err)
